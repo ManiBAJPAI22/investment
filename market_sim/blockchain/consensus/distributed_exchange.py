@@ -117,14 +117,13 @@ class DistributedExchange:
             self.metrics['orders_submitted'] += 1
 
             # Process order through matching engine
+            # Note: Trades are deterministic - all nodes will execute the same
+            # trades from the same sequence of orders, so no separate replication needed
             trades = self._execute_matching(order)
 
             if trades:
                 self.metrics['trades_executed'] += len(trades)
                 self.metrics['orders_matched'] += 1
-
-                # Replicate trades via consensus
-                self._replicate_trades(trades)
         else:
             self.metrics['consensus_failures'] += 1
 
@@ -151,29 +150,6 @@ class DistributedExchange:
             self.metrics['total_volume'] += trade.quantity
 
         return trades
-
-    def _replicate_trades(self, trades: List[Trade]) -> None:
-        """
-        Replicate executed trades via consensus.
-
-        Args:
-            trades: List of trades to replicate
-        """
-        for trade in trades:
-            trade_data = {
-                'id': str(trade.id),
-                'symbol': trade.symbol,
-                'price': str(trade.price),
-                'quantity': str(trade.quantity),
-                'buyer_order_id': str(trade.buyer_order_id),
-                'seller_order_id': str(trade.seller_order_id),
-                'timestamp': trade.timestamp.isoformat()
-            }
-
-            self.orderbook.raft_node.append_entry(
-                LogEntryType.ORDER_SUBMIT,  # Using ORDER_SUBMIT for trades too
-                trade_data
-            )
 
     def get_order_book_snapshot(self, depth: int = 10) -> Tuple[List[tuple], List[tuple]]:
         """

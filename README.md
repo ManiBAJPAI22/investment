@@ -4,10 +4,9 @@ A production-grade distributed order matching engine built on Raft consensus alg
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Tests Passing](https://img.shields.io/badge/tests-16%2F16%20passing-brightgreen.svg)]()
-[![Grade A](https://img.shields.io/badge/grade-A%20(95.7%2F100)-success.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<p align="center">
+<p align="">
   <img src="https://img.shields.io/badge/Throughput-200--220%20ops%2Fsec-blue" alt="Throughput"/>
   <img src="https://img.shields.io/badge/Latency-5--10ms%20(p50)-green" alt="Latency"/>
   <img src="https://img.shields.io/badge/Recovery-<2s-orange" alt="Recovery"/>
